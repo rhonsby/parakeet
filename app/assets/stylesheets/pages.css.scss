@@ -1,0 +1,31 @@
+body, html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url('bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: rgb(192, 222, 237);
+}
+
+#main {
+  margin-top: 40px;
+  border: 1px solid #e1e8ed;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  min-height: 90%;
+  overflow-y: auto;
+}
+
+.main-heading {
+  text-align: center;
+}
+
+.main-heading > ul {
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
