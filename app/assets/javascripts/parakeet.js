@@ -4,7 +4,8 @@ window.Parakeet = {
   Views: {},
   Routers: {},
   initialize: function() {
-    alert('Hello from Backbone!');
+    new Parakeet.Routers.Router({ $rootEl: $('#main-content') });
+    Backbone.history.start();
   }
 };
 

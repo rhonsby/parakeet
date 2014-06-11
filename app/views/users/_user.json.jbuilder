@@ -1,0 +1,1 @@
+json.extract! user, :id, :twitter_id, :username, :name, :profile_image_url
