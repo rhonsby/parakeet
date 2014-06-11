@@ -1,1 +1,15 @@
-<h1><%= user.escape('username') %></h1>
+<div class='user-information'>
+  <img src='<%= user.escape('profile_image_url') %>'>
+  <h1 class='user-username'><%= user.escape('username') %></h1>
+</div>
+
+<ul class='user-tweets'>
+  <h2 class='center'>Latest Tweets</h2>
+  <% user.tweets().each(function (tweet) { %>
+    <a href='<%= tweet.escape('url') %>'>
+      <li class='user-tweet'>
+        <%= tweet.escape('full_text') %>
+      </li>
+    </a>
+  <% }); %>
+</ul>

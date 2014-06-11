@@ -3,7 +3,6 @@
 # Table name: users
 #
 #  id                :integer          not null, primary key
-#  twitter_id        :integer          not null
 #  username          :string(255)      not null
 #  name              :string(255)      not null
 #  profile_image_url :string(255)      not null
@@ -12,8 +11,8 @@
 #
 
 class User < ActiveRecord::Base
-  validates :twitter_id, :username, :profile_image_url, presence: true
-  has_many :tweets, primary_key: :twitter_id, foreign_key: :user_id
+  validates :username, :profile_image_url, presence: true
+  has_many :tweets
 
   def self.find_or_fetch(username)
     user = User.find_by_username(username)
@@ -34,12 +33,11 @@ class User < ActiveRecord::Base
 
     user = User.new(name: userData.name,
                     username: userData.screen_name,
-                    twitter_id: userData.id,
                     profile_image_url: userData.profile_image_url.to_s)
 
     if user.save
       user_timeline.each do |tweetData|
-        Tweet.create(user_id: user.twitter_id, url: tweetData.url.to_s,
+        Tweet.create(user_id: user.id, url: tweetData.url.to_s,
                      full_text: tweetData.full_text, tweeted_at: tweetData.created_at)
       end
 

@@ -3,7 +3,6 @@
 # Table name: users
 #
 #  id                :integer          not null, primary key
-#  twitter_id        :integer          not null
 #  username          :string(255)      not null
 #  name              :string(255)      not null
 #  profile_image_url :string(255)      not null
