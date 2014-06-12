@@ -24,6 +24,7 @@ Parakeet.Models.User = Backbone.Model.extend({
       },
       error: function () {
         alert("User doesn't exist!");
+        $('.spinner').remove();
         Backbone.history.navigate('#/tweets', { trigger: true });
       }
     });

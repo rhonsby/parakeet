@@ -7,7 +7,4 @@ class Api::UsersController < ApplicationController
       render json: { errors: ['Sorry, that user does not exist'] }, status: 422
     end
   end
-
-  def create
-  end
 end
