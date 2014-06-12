@@ -13,4 +13,8 @@
 
 class Tweet < ActiveRecord::Base
   belongs_to :user
+
+  def formatted_date
+    self.tweeted_at.to_time.strftime('%l:%M %p - %-d %b %Y')
+  end
 end

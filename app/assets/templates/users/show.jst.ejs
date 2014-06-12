@@ -4,12 +4,19 @@
 </div>
 
 <ul class='user-tweets'>
-  <h2 class='center'>Latest Tweets</h2>
-  <% user.tweets().each(function (tweet) { %>
-    <a href='<%= tweet.escape('url') %>'>
-      <li class='user-tweet'>
-        <%= tweet.escape('full_text') %>
-      </li>
-    </a>
-  <% }); %>
+  <% if (user.tweets().length) { %>
+    <h2 class='center'>Recent Tweets</h2>
+    <% user.tweets().each(function (tweet) { %>
+      <a href='<%= tweet.escape('url') %>'>
+        <li class='user-tweet'>
+          <div class='tweet-text'>
+            <%= tweet.escape('full_text') %>
+          </div>
+          <div class='tweet-info'>
+            <%= tweet.escape('tweeted_at') %>
+          </div>
+        </li>
+      </a>
+    <% }); %>
+  <% }; %>
 </ul>

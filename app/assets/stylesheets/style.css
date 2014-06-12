@@ -1,6 +1,7 @@
 body, html {
   height: 100%;
   width: 100%;
+  color: #333;
 }
 
 body {
@@ -30,7 +31,7 @@ body {
 
 .main-heading > h1 {
   font-size: 4em;
-  color: rgba(0, 0, 0, 0.8);
+  color: #333;
 }
 
 .main-nav {
@@ -72,10 +73,6 @@ form {
   margin-left: 5px;
 }
 
-.user-information img {
-  border: 3px solid #fff;
-}
-
 .user-tweets {
   list-style: none;
   padding: 0;
@@ -98,4 +95,9 @@ form {
 
 .user-tweets > a:hover {
   text-decoration: none;
+}
+
+.tweet-info {
+  margin-top: 4px;
+  font-size: 0.9em;
 }
