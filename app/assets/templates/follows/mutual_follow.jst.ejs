@@ -12,13 +12,15 @@
   <div class='mutual-follows'>
     <h3>Mutual Follows</h3>
 
-    <ul>
-      <% users.mutualFollows().each(function (user) { %>
-        <li>
-          <img src='<%= user.escape('profile_image_url') %>'>
-          <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
-        </li>
-      <% }); %>
-    </ul>
+    <div class='follow-list'>
+      <ul>
+        <% users.mutualFollows().each(function (user) { %>
+          <li>
+            <img src='<%= user.escape('profile_image_url') %>'>
+            <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
   </div>
 <%  }; %>

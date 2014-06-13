@@ -7,6 +7,7 @@ Parakeet.Views.mutualFollow = Backbone.View.extend({
 
   handleSubmit: function (event) {
     event.preventDefault();
+
     var formData = $(event.currentTarget).serializeJSON().user;
 
     if (this.mutualFollowShow) this.mutualFollowShow.remove();

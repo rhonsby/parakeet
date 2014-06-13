@@ -9,6 +9,18 @@ Parakeet.Views.mutualFollowShow = Backbone.View.extend({
     });
 
     this.listenTo(this.users, 'sync', this.render);
+    this.listenTo(this.users, 'sync', this.turnOffSpin);
+
+    this.addSpin();
+  },
+
+  addSpin: function () {
+    var spinner = new Spinner().spin();
+    $('#mutual-follows-form').after(spinner.el);
+  },
+
+  turnOffSpin: function () {
+    $('.spinner').remove();
   },
 
   render: function () {
