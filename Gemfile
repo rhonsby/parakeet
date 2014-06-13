@@ -11,6 +11,7 @@ gem 'annotate'
 gem 'figaro'
 gem 'twitter'
 gem 'backbone-on-rails'
+gem 'rails_12factor', group: :production
 
 group :development do
   gem 'debugger'
