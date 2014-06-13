@@ -16,7 +16,6 @@ Parakeet.Collections.Users = Backbone.Collection.extend({
         userTwo: userTwo
       },
       success: function (resp) {
-        alert('success!');
         users.set(resp.users, { parse: true });
         users.mutualFollows().set(resp.mutual_follows, { parse: true });
         users.trigger('sync');
