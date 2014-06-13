@@ -19,6 +19,11 @@ group :development do
   gem 'better_errors'
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+end
+
 group :doc do
   gem 'sdoc', require: false
 end

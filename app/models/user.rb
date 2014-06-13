@@ -12,7 +12,7 @@
 #
 
 class User < ActiveRecord::Base
-  validates :username, :profile_image_url, presence: true
+  validates :username, :profile_image_url, :url, presence: true
 
   has_many :tweets
   has_many :inbound_follows, class_name: 'Follow', foreign_key: :followee_id

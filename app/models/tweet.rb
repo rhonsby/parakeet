@@ -12,6 +12,8 @@
 #
 
 class Tweet < ActiveRecord::Base
+  validates :tweeted_at, :full_text, :url, :user_id, presence: true
+
   belongs_to :user
 
   def formatted_date
