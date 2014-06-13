@@ -23,14 +23,14 @@ class User < ActiveRecord::Base
   def self.find_or_fetch(username, options)
     user = User.find_by_username(username)
 
-    if user
-      User.fetch_latest_tweets(user) if options[:tweets]
-      User.fetch_latest_follows(user) if options[:follows]
-
-      return user
-    else
-      self.fetch_by_username(username)
+    unless user
+      user = self.fetch_by_username(username, options)
     end
+
+    User.fetch_latest_tweets(user) if options[:tweets]
+    User.fetch_latest_follows(user) if options[:follows]
+
+    user
   end
 
   def self.fetch_latest_tweets(user)
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     user_timeline.each do |tweetData|
       unless Tweet.find_by_tweeted_at(tweetData.created_at)
         Tweet.create(
-          user_id: user.id, url: tweetData.uri.to_s,
+          user_id: user.id, url: tweetData.url.to_s,
           full_text: tweetData.full_text, tweeted_at: tweetData.created_at)
       end
     end
@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
       friend_user = User.find_by_username(friend[:screen_name]) ||
              User.create(name: friend[:name], username: friend[:screen_name],
                   profile_image_url: friend[:profile_image_url].to_s,
-                  url: friend[:uri].to_s)
+                  url: "https://twitter.com/#{friend[:screen_name]}")
 
       unless Follow.where(followee_id: friend_user.id, follower_id: user.id).any?
         user.outbound_follows.create(followee_id: friend_user.id)
@@ -60,19 +60,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.fetch_by_username(username)
+  def self.fetch_by_username(username, options)
     userData = self.client.user(username)
-    debugger
-
-    user = User.new(name: userData.name,
+    user = User.create(name: userData.name,
                     username: userData.screen_name,
                     profile_image_url: userData.profile_image_url.to_s,
-                    url: userData.uri.to_s)
+                    url: "https://twitter.com/#{userData.screen_name}")
 
-    if user.save
-      User.fetch_latest_tweets(user)
-      return user
-    end
+    return user
   end
 
   def self.find_mutual_follows(user1, user2)

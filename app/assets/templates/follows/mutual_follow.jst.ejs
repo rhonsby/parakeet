@@ -17,6 +17,7 @@
         <% users.mutualFollows().each(function (user) { %>
           <li>
             <img src='<%= user.escape('profile_image_url') %>'>
+            <% debugger %>
             <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
           </li>
         <% }); %>
