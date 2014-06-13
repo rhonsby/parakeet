@@ -8,6 +8,7 @@
 #  profile_image_url :string(255)      not null
 #  created_at        :datetime
 #  updated_at        :datetime
+#  url               :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -61,6 +62,7 @@ class User < ActiveRecord::Base
 
   def self.fetch_by_username(username)
     userData = self.client.user(username)
+    debugger
 
     user = User.new(name: userData.name,
                     username: userData.screen_name,
@@ -69,7 +71,6 @@ class User < ActiveRecord::Base
 
     if user.save
       User.fetch_latest_tweets(user)
-      User.fetch_latest_follows(user)
       return user
     end
   end
