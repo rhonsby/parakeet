@@ -3,10 +3,12 @@ Parakeet.Models.User = Backbone.Model.extend({
 
   parse: function (resp) {
     var tweets = resp.tweets;
+
     if (tweets) {
       this.tweets().set(tweets);
       delete resp.tweets;
     }
+
     return resp;
   },
 

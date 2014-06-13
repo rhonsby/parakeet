@@ -1,6 +1,8 @@
 <div class='user-information'>
   <img src='<%= user.escape('profile_image_url') %>'>
-  <h1 class='user-username'><%= user.escape('username') %></h1>
+  <h1 class='user-username'>
+    <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
+  </h1>
 </div>
 
 <ul class='user-tweets'>

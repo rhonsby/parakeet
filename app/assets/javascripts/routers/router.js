@@ -29,8 +29,8 @@ Parakeet.Routers.Router = Backbone.Router.extend({
   },
 
   mutualFollows: function () {
-    var mutualFollowForm = new Parakeet.Views.mutualFollowForm();
-    this._swapView(mutualFollowForm);
+    var mutualFollow = new Parakeet.Views.mutualFollow();
+    this._swapView(mutualFollow);
   },
 
   _swapView: function (view) {

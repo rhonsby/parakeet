@@ -1,0 +1,24 @@
+<div class='followers clearfix'>
+  <div class='users'>
+  <% users.each(function (user) { %>
+    <div class='mutual-follow-users'>
+      <img src='<%= user.escape('profile_image_url') %>'>
+      <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
+    </div>
+  <%  }); %>
+</div>
+
+<% if (users.mutualFollows().length) { %>
+  <div class='mutual-follows'>
+    <h3>Mutual Follows</h3>
+
+    <ul>
+      <% users.mutualFollows().each(function (user) { %>
+        <li>
+          <img src='<%= user.escape('profile_image_url') %>'>
+          <a href='<%= user.escape('url') %>'><%= user.escape('username') %></a>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+<%  }; %>

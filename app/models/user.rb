@@ -19,62 +19,67 @@ class User < ActiveRecord::Base
   has_many :followers, through: :inbound_follows, source: :follower
   has_many :followees, through: :outbound_follows, source: :followee
 
-  def self.find_or_fetch(username)
+  def self.find_or_fetch(username, options)
     user = User.find_by_username(username)
 
     if user
-      User.fetch_latest_tweets(user)
+      User.fetch_latest_tweets(user) if options[:tweets]
+      User.fetch_latest_follows(user) if options[:follows]
+
+      return user
     else
       self.fetch_by_username(username)
     end
   end
 
   def self.fetch_latest_tweets(user)
-    begin
-      user_timeline = self.client.user_timeline(user.username)
-    rescue
-      return user
-    end
+    user_timeline = self.client.user_timeline(user.username)
 
     user_timeline.each do |tweetData|
       unless Tweet.find_by_tweeted_at(tweetData.created_at)
         Tweet.create(
-          user_id: user.id, url: tweetData.url.to_s,
+          user_id: user.id, url: tweetData.uri.to_s,
           full_text: tweetData.full_text, tweeted_at: tweetData.created_at)
       end
     end
+  end
 
-    user
+  def self.fetch_latest_follows(user)
+    user_follows = self.client.friends(user.username, count: 1000)
+
+    user_follows.attrs[:users].each do |friend|
+      friend_user = User.find_by_username(friend[:screen_name]) ||
+             User.create(name: friend[:name], username: friend[:screen_name],
+                  profile_image_url: friend[:profile_image_url].to_s,
+                  url: friend[:uri].to_s)
+
+      unless Follow.where(followee_id: friend_user.id, follower_id: user.id).any?
+        user.outbound_follows.create(followee_id: friend_user.id)
+      end
+    end
   end
 
   def self.fetch_by_username(username)
-    user_timeline = self.client.user_timeline(username)
-    user_follows = self.client.friends(username)
-
-    userData = user_timeline.first.user
+    userData = self.client.user(username)
 
     user = User.new(name: userData.name,
                     username: userData.screen_name,
-                    profile_image_url: userData.profile_image_url.to_s)
+                    profile_image_url: userData.profile_image_url.to_s,
+                    url: userData.uri.to_s)
 
     if user.save
-      ActiveRecord::Base.transaction do
-        user_timeline.each do |tweetData|
-          Tweet.create(
-            user_id: user.id, url: tweetData.url.to_s,
-            full_text: tweetData.full_text, tweeted_at: tweetData.created_at)
-        end
-
-        debugger
-        user_follows.attrs[:users].each do |friend|
-          new_user = User.create(name: friend[:name], username: friend[:screen_name],
-                      profile_image_url: friend[:profile_image_url].to_s)
-
-          user.outbound_follows.create(followee_id: new_user.id)
-        end
-      end
-
+      User.fetch_latest_tweets(user)
+      User.fetch_latest_follows(user)
       return user
+    end
+  end
+
+  def self.find_mutual_follows(user1, user2)
+    u1_followees = user1.followees
+    u2_followees = user2.followees
+
+    u1_followees.select do |followee|
+      followee if u2_followees.include?(followee)
     end
   end
 
